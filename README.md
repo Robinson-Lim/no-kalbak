@@ -57,13 +57,3 @@ $env:NEOPLE_API_KEY = "본인의 API 키"
 P95 300ms 목표는 아직 달성하지 못했습니다.
 
 정리 과정의 실제 검증 결과와 남은 문제는 [검토 기록](docs/REVIEW.md), 재측정 방법은 [벤치마크 안내](docs/BENCHMARKS.md)에 정리합니다.
-
-## GitHub 업로드
-
-GitHub에는 **이 저장소의 소스만** 올립니다. 실행 파일은 GitHub Release에 ZIP으로 첨부합니다.
-ONNX 모델은 각각 약 13 MiB 이하이므로 이 구성에서는 Git LFS가 필요하지 않습니다.
-API 키, 개인 DB, 캡처, 데이터셋, 빌드 결과는 `.gitignore`로 제외합니다.
-
-기존 저장소: [Robinson-Lim/no-kalbak](https://github.com/Robinson-Lim/no-kalbak)
-
-[처음 업로드하는 방법](docs/GITHUB.md)
