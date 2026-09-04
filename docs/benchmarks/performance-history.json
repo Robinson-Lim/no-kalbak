@@ -6,11 +6,23 @@
     "docs/benchmarks/profile_all_final3.json",
     "artifacts/benchmark-ocr-fix.json (1.0.1 verification run)"
   ],
-  "pythonSecondAccuracy": {
+  "pythonAccuracyHistory": {
     "datasetSamples": 153,
     "metric": "c pass: name, rarity, slot, grade, quality, and four stats all correct",
+    "baseline": {
+      "stage": "Python 1차",
+      "bSuccessPercent": 17.6,
+      "cSuccessPercent": 2.0
+    },
+    "final": {
+      "stage": "Python 2차 iter#66",
+      "bSuccessPercent": 98.69,
+      "bCorrect": 151,
+      "cSuccessPercent": 96.08,
+      "cCorrect": 147
+    },
     "points": [
-      { "iteration": 0, "label": "Baseline", "successPercent": 2.00 },
+      { "iteration": 0, "label": "Python 1차 기준선", "successPercent": 2.00 },
       { "iteration": 1, "label": "#1", "successPercent": 11.10 },
       { "iteration": 2, "label": "#2", "successPercent": 13.70 },
       { "iteration": 5, "label": "#5", "successPercent": 17.00 },
