@@ -1,0 +1,15 @@
+DNFForgedBlade — 네오플 글꼴 라이선스
+
+Copyright (c) 2023, NEOPLE Inc. (https://www.neople.co.kr)
+Reserved Font Name: ForgedBlade_TTF.ttf, ForgedBlade_OTF.otf.
+
+출처: https://df.nexon.com/data/font (확인일: 2026-08-16)
+
+- 서체의 지적 재산권을 포함한 모든 권리는 ㈜ 네오플에 있습니다.
+- 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며 자유롭게 사용 및 배포할 수 있고, 상업적 사용이 가능합니다.
+- 서체는 임의로 수정·편집할 수 없으며 배포되는 형태 그대로 사용해야 합니다.
+- 글꼴 자체의 유료 판매는 금지됩니다.
+- 본 저작권 안내를 포함해 다른 소프트웨어와 번들하거나 임베디드 폰트로 사용할 수 있습니다.
+- 출처 표기를 권장합니다.
+
+이 프로젝트에는 원본 DNFForgedBlade-Bold/Medium 폰트를 변환한 WOFF2 파일과, 이를 base64로 내장한 CSS가 포함될 수 있습니다. 원본 폰트의 명칭·글리프·라이선스를 변경하지 마십시오.
