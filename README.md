@@ -3,6 +3,12 @@
 던전앤파이터 장비 툴팁을 인식해 실제 능력치를 비교하고, 칼레이도 박스 사용 판단을 돕는 Windows 프로그램입니다.
 C# / .NET 10 / WPF로 작성했으며 Windows OCR과 PP-OCRv5 ONNX를 사용합니다.
 
+## 시연 영상
+
+[![no-kalbak 프로그램 시연 영상](https://img.youtube.com/vi/jsNqvN16rGI/hqdefault.jpg)](https://youtu.be/jsNqvN16rGI)
+
+썸네일을 클릭하면 YouTube에서 시연 영상을 볼 수 있습니다. [▶ 시연 영상 보기](https://youtu.be/jsNqvN16rGI)
+
 ## 프로그램 파이프라인
 
 Neople Open API로 캐릭터와 착용 장비 정보를 조회하고, 게임 화면의 툴팁에서 실제 능력치를 읽어 판정에 활용합니다.
