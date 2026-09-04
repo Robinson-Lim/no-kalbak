@@ -1,0 +1,35 @@
+<Window x:Class="DnfItemChecker.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:DnfItemChecker.App.Views"
+        mc:Ignorable="d"
+        Title="DNF 아이템 등급 판별기" Height="720" Width="1080"
+        Icon="Assets/appicon.ico"
+        Background="{StaticResource BgDeepBrush}"
+        TextOptions.TextFormattingMode="Display">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="{StaticResource BgRaisedBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,10">
+            <TextBlock Text="던전앤파이터 아이템 등급 판별기"
+                       FontFamily="{StaticResource HeaderFont}" FontSize="20" FontWeight="SemiBold"
+                       Foreground="{StaticResource GoldBrightBrush}" />
+        </Border>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Margin="8">
+            <TabItem Header="① 캐릭터">
+                <views:CharacterTabView DataContext="{Binding CharacterTab}" />
+            </TabItem>
+            <TabItem Header="② 장비">
+                <views:EquipmentTabView DataContext="{Binding EquipmentTab}" />
+            </TabItem>
+            <TabItem Header="③ 인게임 인식">
+                <views:InGameTabView DataContext="{Binding InGameTab}" />
+            </TabItem>
+            <TabItem Header="④ 능력치 표">
+                <views:StatTableTabView DataContext="{Binding StatTableTab}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

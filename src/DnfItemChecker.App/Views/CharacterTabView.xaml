@@ -1,0 +1,124 @@
+<UserControl x:Class="DnfItemChecker.App.Views.CharacterTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DnfItemChecker.App.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:CharacterTabViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Search bar -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="{Binding SearchName, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Grid.Column="1" Content="캐릭터 검색" Command="{Binding SearchCommand}" Margin="8,0,0,0" />
+        </Grid>
+
+        <!-- Two columns: search results | roster -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.2*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Search results -->
+            <DockPanel Grid.Column="0" Margin="0,0,6,0">
+                <TextBlock DockPanel.Dock="Top" Text="검색 결과" Style="{StaticResource HeaderText}" />
+                <ListBox ItemsSource="{Binding SearchResults}"
+                         SelectedItem="{Binding SelectedSearchResult}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding CharacterName}" FontWeight="SemiBold"
+                                               Foreground="{StaticResource GoldBrightBrush}" />
+                                    <TextBlock>
+                                        <Run Text="Lv." /><Run Text="{Binding Level, Mode=OneWay}" />
+                                        <Run Text=" · " /><Run Text="{Binding JobGrowName, Mode=OneWay}" />
+                                        <Run Text=" · 명성 " /><Run Text="{Binding Fame, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="＋ 로스터 추가" VerticalAlignment="Center"
+                                        Command="{Binding DataContext.AddToRosterCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+
+            <!-- Roster grouped by adventure -->
+            <DockPanel Grid.Column="1" Margin="6,0,0,0">
+                <TextBlock DockPanel.Dock="Top" Text="내 로스터 (모험단별)" Style="{StaticResource HeaderText}" />
+                <ListBox ItemsSource="{Binding RosterView}"
+                         SelectedItem="{Binding SelectedRosterCharacter}">
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource BgRaisedBrush}" Padding="6,3" Margin="0,4,0,2">
+                                        <TextBlock FontFamily="{StaticResource HeaderFont}" FontWeight="Bold"
+                                                   Foreground="{StaticResource GoldBrush}">
+                                            <Run Text="🏰 모험단: " /><Run Text="{Binding Name, Mode=OneWay}" />
+                                            <Run Text="  (" /><Run Text="{Binding ItemCount, Mode=OneWay}" /><Run Text="명)" />
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding CharacterName}" FontWeight="SemiBold"
+                                               Foreground="{StaticResource GoldBrightBrush}" />
+                                    <TextBlock>
+                                        <Run Text="Lv." /><Run Text="{Binding Level, Mode=OneWay}" />
+                                        <Run Text=" · " /><Run Text="{Binding JobGrowName, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="선택 →" VerticalAlignment="Center"
+                                        Command="{Binding DataContext.SelectCharacterCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+                                <Button Grid.Column="2" Content="✕" VerticalAlignment="Center"
+                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Grid>
+
+        <!-- Status -->
+        <Border Grid.Row="2" Margin="0,8,0,0" Padding="8,5" Background="{StaticResource BgRaisedBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibility}}">
+            <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource SubtleText}" />
+        </Border>
+    </Grid>
+</UserControl>

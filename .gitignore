@@ -1,0 +1,43 @@
+# .NET / editors
+.vs/
+.idea/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.pdb
+
+# Build and release output
+/artifacts/
+/app/
+/app-latest/
+/publish/
+*.exe
+*.dll
+*.zip
+
+# Secrets and personal runtime data (at ANY depth)
+config.json
+config.*.json
+.env
+.env.*
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.log
+logs/
+debug_captures*/
+
+# External datasets and historical working copies
+testdataset/
+tests/pic/
+tests/eval_live/
+performance-alternatives-*/
+backup/
+backups/
+
+# OS
+Thumbs.db
+.DS_Store

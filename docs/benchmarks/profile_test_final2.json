@@ -1,0 +1,154 @@
+{
+  "dataset": "external: testdataset/dataset/benchmark/labels_test.jsonl",
+  "samples": 29,
+  "captureStage": "dataset file-read proxy; excludes real screen capture",
+  "includeItemName": false,
+  "itemNameMode": "deferred secondary identity path; excluded from core scoring",
+  "latencyMs": {
+    "mean": 478.7216068965518,
+    "p50": 451.7619,
+    "p95": 532.6163999999999,
+    "p99": 923.6840879999994,
+    "max": 1065.5735
+  },
+  "stageLatencyMs": {
+    "capture": {
+      "samples": 29,
+      "mean": 0.22578620689655177,
+      "p50": 0.2227,
+      "p95": 0.27162,
+      "p99": 0.3334679999999999
+    },
+    "total": {
+      "samples": 29,
+      "mean": 478.7216068965518,
+      "p50": 451.7619,
+      "p95": 532.6163999999999,
+      "p99": 923.6840879999994
+    },
+    "tooltipLocator": {
+      "samples": 29,
+      "mean": 2.4058344827586207,
+      "p50": 2.2482,
+      "p95": 3.00448,
+      "p99": 4.982063999999997
+    },
+    "crop": {
+      "samples": 29,
+      "mean": 16.966162068965517,
+      "p50": 16.9754,
+      "p95": 21.809879999999996,
+      "p99": 24.495975999999995
+    },
+    "rarity": {
+      "samples": 29,
+      "mean": 2.3784724137931037,
+      "p50": 2.2386,
+      "p95": 2.71418,
+      "p99": 7.9614839999999925
+    },
+    "qualityPercent": {
+      "samples": 29,
+      "mean": 0.0021103448275862067,
+      "p50": 0.0023,
+      "p95": 0.004,
+      "p99": 0.005367999999999998
+    },
+    "slot": {
+      "samples": 29,
+      "mean": 0.0008172413793103445,
+      "p50": 0.0007,
+      "p95": 0.0014599999999999997,
+      "p99": 0.0017159999999999996
+    },
+    "statsName": {
+      "samples": 29,
+      "mean": 0.036851724137931044,
+      "p50": 0.0098,
+      "p95": 0.03895999999999996,
+      "p99": 0.5210079999999992
+    },
+    "statsValue": {
+      "samples": 29,
+      "mean": 0.036851724137931044,
+      "p50": 0.0098,
+      "p95": 0.03895999999999996,
+      "p99": 0.5210079999999992
+    },
+    "windowsOcr": {
+      "samples": 29,
+      "mean": 282.93869655172415,
+      "p50": 282.6341,
+      "p95": 316.14745999999997,
+      "p99": 322.653284
+    },
+    "onnxInference": {
+      "samples": 29,
+      "mean": 348.34247931034474,
+      "p50": 335.9463,
+      "p95": 417.3708399999999,
+      "p99": 759.0262239999995
+    },
+    "itemNameOcr": {
+      "samples": 29,
+      "mean": 0,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0
+    },
+    "postprocessing": {
+      "samples": 29,
+      "mean": 0.46903448275862075,
+      "p50": 0.3503,
+      "p95": 1.4307399999999975,
+      "p99": 2.0377639999999997
+    }
+  },
+  "fields": {
+    "rarity": {
+      "correct": 29,
+      "total": 29
+    },
+    "slot": {
+      "correct": 29,
+      "total": 29
+    },
+    "grade": {
+      "correct": 29,
+      "labeled": 29
+    },
+    "quality": {
+      "correct": 29,
+      "labeled": 29
+    },
+    "qualityPercent": {
+      "correct": 29,
+      "labeled": 29
+    },
+    "itemName": {
+      "correct": 0,
+      "labeled": 0
+    },
+    "mainStat": {
+      "correct": 29,
+      "labeled": 29
+    },
+    "statsName": {
+      "correct": 29,
+      "labeled": 29
+    },
+    "statsValue": {
+      "correct": 29,
+      "total": 29
+    },
+    "coreExact": {
+      "correct": 29,
+      "total": 29
+    },
+    "all": {
+      "correct": 29,
+      "total": 29
+    }
+  },
+  "statsValueFailures": []
+}

@@ -1,0 +1,110 @@
+<UserControl x:Class="DnfItemChecker.App.Views.InGameTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DnfItemChecker.App.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:InGameTabViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding Header}" Style="{StaticResource HeaderText}" />
+
+        <!-- OCR unavailable warning -->
+        <Border Grid.Row="1" Margin="0,0,0,8" Padding="8,5"
+                Background="{StaticResource BgRaisedBrush}" BorderBrush="{StaticResource MismatchBrush}" BorderThickness="1"
+                Visibility="{Binding IsOcrAvailable, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+            <TextBlock Text="⚠ 한글 OCR 언어 팩을 사용할 수 없습니다. Windows 설정 → 시간 및 언어 → 언어에서 한국어 기본 기능을 설치하세요."
+                       Foreground="{StaticResource TextBrush}" />
+        </Border>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{Binding LiveButtonText}" Command="{Binding ToggleLiveCommand}"
+                        Padding="16,8" FontSize="14" />
+                <Button Content="{Binding SaveModeButtonText}" Command="{Binding ToggleSaveModeCommand}"
+                        Padding="12,8" Margin="8,0,0,0" />
+                <Button Content="저장" Command="{Binding SaveEquippedCommand}"
+                        Padding="12,8" Margin="8,0,0,0" />
+                <TextBlock Text="{Binding EquippedCandidateDisplay}" Style="{StaticResource SubtleText}"
+                           VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" />
+            </StackPanel>
+            <StackPanel Visibility="{Binding IsSaveMode, Converter={StaticResource BoolToVisibility}}"
+                        Margin="4,6,0,0">
+                <TextBlock Text="{Binding RegistrationProgress}" Style="{StaticResource SubtleText}" />
+                <TextBlock Text="{Binding RegisteredSlotsDisplay}" Style="{StaticResource SubtleText}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+            <TextBlock Text="{Binding EquippedMatchDisplay}" Style="{StaticResource SubtleText}"
+                       Margin="4,6,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- Result card -->
+        <Border Grid.Row="3" VerticalAlignment="Top" Padding="14" Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                Visibility="{Binding HasResult, Converter={StaticResource BoolToVisibility}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BadgeBorder}"
+                        Background="{Binding Outcome, Converter={StaticResource OutcomeToBrush}}" Margin="0,0,0,10">
+                    <TextBlock Style="{StaticResource BadgeText}" FontSize="14"
+                               Text="{Binding Outcome, Converter={StaticResource OutcomeToText}}" />
+                </Border>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="등급(레어리티)" Foreground="{StaticResource GoldBrush}" Margin="0,2,16,2" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DetectedRarity}" FontWeight="SemiBold"
+                           Foreground="{StaticResource GoldBrightBrush}" Margin="0,2" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="등급/품질 (판정 기준)" Foreground="{StaticResource GoldBrush}" Margin="0,2,16,2" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DetectedGrade}" FontWeight="SemiBold" Margin="0,2" />
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="부위" Foreground="{StaticResource GoldBrush}" Margin="0,2,16,2" />
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding DetectedSlot}" Margin="0,2" />
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="관측 주능력치 (참고)" Foreground="{StaticResource GoldBrush}" Margin="0,2,16,2" />
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ObservedDisplay}" Margin="0,2" />
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="100% 기준 (참고)" Foreground="{StaticResource GoldBrush}" Margin="0,2,16,2" />
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ReferenceDisplay}" Margin="0,2" />
+            </Grid>
+        </Border>
+
+        <!-- Raw OCR lines (collapsible) + status -->
+        <StackPanel Grid.Row="4" Margin="0,8,0,0">
+            <Expander Header="원본 OCR 라인 (디버그)">
+                <ItemsControl ItemsSource="{Binding RawLines}" Margin="4">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontFamily="Consolas" FontSize="12"
+                                       Foreground="{StaticResource TextBrush}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+            <Border Margin="0,8,0,0" Padding="8,5" Background="{StaticResource BgRaisedBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                    Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibility}}">
+                <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource SubtleText}" />
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

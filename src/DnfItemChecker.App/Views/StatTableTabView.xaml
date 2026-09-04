@@ -1,0 +1,41 @@
+<UserControl x:Class="DnfItemChecker.App.Views.StatTableTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:DnfItemChecker.App.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:StatTableTabViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,8">
+            <Button DockPanel.Dock="Right" Content="저장" Command="{Binding SaveCommand}" Margin="6,0,0,0" />
+            <Button DockPanel.Dock="Right" Content="되돌리기" Command="{Binding ReloadCommand}" />
+            <TextBlock Text="부위 · 레어리티별 최상급 100% 주능력치 (직접 편집 가능)"
+                       Style="{StaticResource HeaderText}" VerticalAlignment="Center" />
+        </DockPanel>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Rows}" AutoGenerateColumns="False"
+                  CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="부위" Binding="{Binding Slot, Mode=OneWay}" IsReadOnly="True" Width="140" />
+                <DataGridTextColumn Header="레어리티" Binding="{Binding Rarity, Mode=OneWay}" IsReadOnly="True" Width="110" />
+                <DataGridTextColumn Header="힘" Binding="{Binding Strength, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                <DataGridTextColumn Header="지능" Binding="{Binding Intelligence, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                <DataGridTextColumn Header="체력" Binding="{Binding Vitality, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                <DataGridTextColumn Header="정신력" Binding="{Binding Spirit, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Margin="0,8,0,0" Padding="8,5" Background="{StaticResource BgRaisedBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibility}}">
+            <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource SubtleText}" />
+        </Border>
+    </Grid>
+</UserControl>

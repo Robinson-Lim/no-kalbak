@@ -1,0 +1,306 @@
+{
+  "상의": {
+    "유니크": {
+      "Strength": 142,
+      "Intelligence": 142,
+      "Vitality": 142,
+      "Spirit": 142
+    },
+    "레전더리": {
+      "Strength": 143,
+      "Intelligence": 143,
+      "Vitality": 143,
+      "Spirit": 143
+    },
+    "에픽": {
+      "Strength": 144,
+      "Intelligence": 144,
+      "Vitality": 144,
+      "Spirit": 144
+    },
+    "레어": {
+      "Strength": 140,
+      "Intelligence": 140,
+      "Vitality": 140,
+      "Spirit": 140
+    }
+  },
+  "하의": {
+    "유니크": {
+      "Strength": 142,
+      "Intelligence": 142,
+      "Vitality": 142,
+      "Spirit": 142
+    },
+    "레전더리": {
+      "Strength": 143,
+      "Intelligence": 143,
+      "Vitality": 143,
+      "Spirit": 143
+    },
+    "에픽": {
+      "Strength": 144,
+      "Intelligence": 144,
+      "Vitality": 144,
+      "Spirit": 144
+    },
+    "레어": {
+      "Strength": 140,
+      "Intelligence": 140,
+      "Vitality": 140,
+      "Spirit": 140
+    }
+  },
+  "머리어깨": {
+    "유니크": {
+      "Strength": 133,
+      "Intelligence": 133,
+      "Vitality": 133,
+      "Spirit": 133
+    },
+    "레전더리": {
+      "Strength": 134,
+      "Intelligence": 134,
+      "Vitality": 134,
+      "Spirit": 134
+    },
+    "에픽": {
+      "Strength": 135,
+      "Intelligence": 135,
+      "Vitality": 135,
+      "Spirit": 135
+    },
+    "레어": {
+      "Strength": 132,
+      "Intelligence": 132,
+      "Vitality": 132,
+      "Spirit": 132
+    }
+  },
+  "벨트": {
+    "유니크": {
+      "Strength": 125,
+      "Intelligence": 125,
+      "Vitality": 125,
+      "Spirit": 125
+    },
+    "레전더리": {
+      "Strength": 125,
+      "Intelligence": 125,
+      "Vitality": 125,
+      "Spirit": 125
+    },
+    "에픽": {
+      "Strength": 127,
+      "Intelligence": 127,
+      "Vitality": 127,
+      "Spirit": 127
+    },
+    "레어": {
+      "Strength": 124,
+      "Intelligence": 124,
+      "Vitality": 124,
+      "Spirit": 124
+    }
+  },
+  "신발": {
+    "유니크": {
+      "Strength": 125,
+      "Intelligence": 125,
+      "Vitality": 125,
+      "Spirit": 125
+    },
+    "레전더리": {
+      "Strength": 125,
+      "Intelligence": 125,
+      "Vitality": 125,
+      "Spirit": 125
+    },
+    "에픽": {
+      "Strength": 127,
+      "Intelligence": 127,
+      "Vitality": 127,
+      "Spirit": 127
+    },
+    "레어": {
+      "Strength": 124,
+      "Intelligence": 124,
+      "Vitality": 124,
+      "Spirit": 124
+    }
+  },
+  "보조장비": {
+    "유니크": {
+      "Strength": 150,
+      "Intelligence": 150,
+      "Vitality": 150,
+      "Spirit": 150
+    },
+    "레전더리": {
+      "Strength": 151,
+      "Intelligence": 151,
+      "Vitality": 151,
+      "Spirit": 151
+    },
+    "에픽": {
+      "Strength": 152,
+      "Intelligence": 152,
+      "Vitality": 152,
+      "Spirit": 152
+    },
+    "레어": {
+      "Strength": 147,
+      "Intelligence": 147,
+      "Vitality": 147,
+      "Spirit": 147
+    }
+  },
+  "마법석": {
+    "유니크": {
+      "Strength": 174,
+      "Intelligence": 174,
+      "Vitality": 174,
+      "Spirit": 174
+    },
+    "레전더리": {
+      "Strength": 176,
+      "Intelligence": 176,
+      "Vitality": 176,
+      "Spirit": 176
+    },
+    "에픽": {
+      "Strength": 178,
+      "Intelligence": 178,
+      "Vitality": 178,
+      "Spirit": 178
+    },
+    "레어": {
+      "Strength": 171,
+      "Intelligence": 171,
+      "Vitality": 171,
+      "Spirit": 171
+    }
+  },
+  "귀걸이": {
+    "유니크": {
+      "Strength": 174,
+      "Intelligence": 174,
+      "Vitality": 174,
+      "Spirit": 174
+    },
+    "레전더리": {
+      "Strength": 226,
+      "Intelligence": 226,
+      "Vitality": 226,
+      "Spirit": 226
+    },
+    "에픽": {
+      "Strength": 278,
+      "Intelligence": 278,
+      "Vitality": 278,
+      "Spirit": 278
+    },
+    "레어": {
+      "Strength": 171,
+      "Intelligence": 171,
+      "Vitality": 171,
+      "Spirit": 171
+    }
+  },
+  "목걸이": {
+    "유니크": {
+      "Strength": 100,
+      "Intelligence": 151,
+      "Vitality": 100,
+      "Spirit": 226
+    },
+    "레전더리": {
+      "Strength": 100,
+      "Intelligence": 152,
+      "Vitality": 100,
+      "Spirit": 229
+    },
+    "에픽": {
+      "Strength": 100,
+      "Intelligence": 153,
+      "Vitality": 100,
+      "Spirit": 232
+    },
+    "태초": {
+      "Strength": 100,
+      "Intelligence": 154,
+      "Vitality": 100,
+      "Spirit": 235
+    },
+    "레어": {
+      "Strength": 100,
+      "Intelligence": 149,
+      "Vitality": 100,
+      "Spirit": 220
+    }
+  },
+  "팔찌": {
+    "유니크": {
+      "Strength": 151,
+      "Intelligence": 100,
+      "Vitality": 226,
+      "Spirit": 100
+    },
+    "레전더리": {
+      "Strength": 152,
+      "Intelligence": 100,
+      "Vitality": 229,
+      "Spirit": 100
+    },
+    "에픽": {
+      "Strength": 153,
+      "Intelligence": 100,
+      "Vitality": 232,
+      "Spirit": 100
+    },
+    "태초": {
+      "Strength": 154,
+      "Intelligence": 100,
+      "Vitality": 235,
+      "Spirit": 100
+    },
+    "레어": {
+      "Strength": 149,
+      "Intelligence": 100,
+      "Vitality": 220,
+      "Spirit": 100
+    }
+  },
+  "반지": {
+    "유니크": {
+      "Strength": 175,
+      "Intelligence": 175,
+      "Vitality": 100,
+      "Spirit": 100
+    },
+    "레전더리": {
+      "Strength": 177,
+      "Intelligence": 177,
+      "Vitality": 100,
+      "Spirit": 100
+    },
+    "에픽": {
+      "Strength": 179,
+      "Intelligence": 179,
+      "Vitality": 100,
+      "Spirit": 100
+    },
+    "태초": {
+      "Strength": 180,
+      "Intelligence": 180,
+      "Vitality": 100,
+      "Spirit": 100
+    },
+    "레어": {
+      "Strength": 172,
+      "Intelligence": 172,
+      "Vitality": 100,
+      "Spirit": 100
+    }
+  }
+}

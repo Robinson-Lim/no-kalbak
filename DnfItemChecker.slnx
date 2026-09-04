@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DnfItemChecker.App/DnfItemChecker.App.csproj" />
+    <Project Path="src/DnfItemChecker.Core/DnfItemChecker.Core.csproj" />
+    <Project Path="src/DnfItemChecker.Vision/DnfItemChecker.Vision.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DnfItemChecker.Core.Tests/DnfItemChecker.Core.Tests.csproj" />
+    <Project Path="tests/DnfItemChecker.Vision.Tests/DnfItemChecker.Vision.Tests.csproj" />
+    <Project Path="tests/DnfItemChecker.App.Tests/DnfItemChecker.App.Tests.csproj" />
+  </Folder>
+</Solution>
