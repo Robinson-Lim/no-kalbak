@@ -13,7 +13,8 @@ namespace DnfItemChecker.Vision;
 public sealed class OnnxOcrService : IOcrService, IDisposable
 {
     private RapidOcr? _ocr;
-    private readonly object _gate = new();
+    private readonly SemaphoreSlim _operationGate = new(1, 1);
+    private volatile bool _disposed;
     private readonly string _modelsDir;
     private readonly int _limitSideLen;
     private readonly Lazy<Task> _initialization;
@@ -96,7 +97,24 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
         catch { /* ignore */ }
     }
 
-    public bool IsAvailable => _available;
+    public bool IsAvailable => !_disposed && _available;
+
+    private async Task<OcrResult> RunExclusiveAsync(Func<Task<OcrResult>> operation, CancellationToken ct)
+    {
+        await _operationGate.WaitAsync(ct).ConfigureAwait(false);
+        try
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            ct.ThrowIfCancellationRequested();
+            var result = await operation().ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
+            return result;
+        }
+        finally
+        {
+            _operationGate.Release();
+        }
+    }
 
     private async Task<bool> EnsureInitializedAsync(CancellationToken ct)
     {
@@ -115,8 +133,11 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
         }
     }
 
-    public async Task<OcrResult> RecognizeAsync(
+    public Task<OcrResult> RecognizeAsync(
         byte[] imageBytes, CancellationToken ct = default, double maxScale = 4.0)
+        => RunExclusiveAsync(() => RecognizeCoreAsync(imageBytes, ct), ct);
+
+    private async Task<OcrResult> RecognizeCoreAsync(byte[] imageBytes, CancellationToken ct)
     {
         if (imageBytes.Length == 0 || !await EnsureInitializedAsync(ct).ConfigureAwait(false))
             return new OcrResult(Array.Empty<OcrLine>());
@@ -134,8 +155,9 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
             {
                 ImgResize = 0, LimitSideLen = _limitSideLen, DoAngle = false,
             };
-            // RapidOcr holds mutable per-call state across its three sessions; serialize calls.
-            lock (_gate) res = _ocr!.Detect(bmp, opts);
+            // The operation gate keeps inference and disposal mutually exclusive.
+            ct.ThrowIfCancellationRequested();
+            res = _ocr!.Detect(bmp, opts);
 
             var lines = new List<OcrLine>();
             foreach (var block in res.TextBlocks)
@@ -164,20 +186,23 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
         get
         {
             var init = _initialization.Value;
-            return _recs is not null || !init.IsCompleted;
+            return !_disposed && (_recs is not null || !init.IsCompleted);
         }
     }
 
     /// <summary>
     /// Recognition-only OCR: <see cref="TextLineSegmenter"/> finds the text boxes by pixel projection
     /// (~2ms) and only the CRNN recognizer runs per segment, skipping the DbNet detection inference
-    /// that dominates <see cref="RecognizeAsync"/>. Segments are recognized on two engine lanes
+    /// that dominates <see cref="RecognizeAsync"/>. Segments are recognized on four engine lanes
     /// concurrently. Boxes in the returned lines are in the input image's coordinates.
     /// </summary>
     /// <param name="maxTop">Segments starting below this y are skipped — the caller knows where its
     /// fields of interest end (each skipped segment saves a ~10ms CRNN call).</param>
-    public async Task<OcrResult> RecognizeLinesAsync(
+    public Task<OcrResult> RecognizeLinesAsync(
         byte[] imageBytes, int maxTop = int.MaxValue, CancellationToken ct = default)
+        => RunExclusiveAsync(() => RecognizeLinesCoreAsync(imageBytes, maxTop, ct), ct);
+
+    private async Task<OcrResult> RecognizeLinesCoreAsync(byte[] imageBytes, int maxTop, CancellationToken ct)
     {
         if (imageBytes.Length == 0 || !await EnsureInitializedAsync(ct).ConfigureAwait(false))
             return new OcrResult(Array.Empty<OcrLine>());
@@ -185,7 +210,7 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
         var recs = _recs;
         if (recs is null) return new OcrResult(Array.Empty<OcrLine>());
 
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             using var bmp = SKBitmap.Decode(imageBytes);
             if (bmp is null) return new OcrResult(Array.Empty<OcrLine>());
@@ -205,6 +230,7 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
                 using var srcImage = SKImage.FromBitmap(bmp);
                 for (int i = 0; i < boxes.Count; i++)
                 {
+                    ct.ThrowIfCancellationRequested();
                     var r = boxes[i];
                     var dst = new SKBitmap(new SKImageInfo(r.Width * 2, r.Height * 2, bmp.ColorType, bmp.AlphaType));
                     using (var canvas = new SKCanvas(dst))
@@ -216,18 +242,23 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
 
                 void RecLane(int lane)
                 {
-                    lock (recs[lane])
-                        for (int i = lane; i < crops.Length; i += RecLanes)
-                            texts[i] = string.Concat(recs[lane].GetTextLine(crops[i]).Chars ?? Array.Empty<string>());
+                    for (int i = lane; i < crops.Length; i += RecLanes)
+                    {
+                        ct.ThrowIfCancellationRequested();
+                        texts[i] = string.Concat(recs[lane].GetTextLine(crops[i]).Chars ?? Array.Empty<string>());
+                    }
                 }
-                var lanes = new Task[RecLanes - 1];
-                for (int l = 1; l < RecLanes; l++)
+                var lanes = new Task[RecLanes];
+                for (int l = 0; l < RecLanes; l++)
                 {
                     int lane = l;
-                    lanes[l - 1] = Task.Run(() => RecLane(lane), ct);
+                    lanes[l] = Task.Run(() => RecLane(lane));
                 }
-                RecLane(0);
-                Task.WaitAll(lanes, ct);
+                // Cancellation/failure in ANY lane must still join ALL lanes before the
+                // finally block frees their shared crops. A cancellable WaitAll caused
+                // sk_bitmap_get_info access violations while other lanes were still running.
+                await Task.WhenAll(lanes).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
             }
             finally
             {
@@ -248,8 +279,21 @@ public sealed class OnnxOcrService : IOcrService, IDisposable
 
     public void Dispose()
     {
-        _ocr?.Dispose();
-        if (_recs is not null)
-            foreach (var r in _recs) r.Dispose();
+        // Do not dispose native sessions underneath an active inference or initialization.
+        _operationGate.Wait();
+        try
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _initialization.Value.GetAwaiter().GetResult();
+            _available = false;
+            _ocr?.Dispose();
+            if (_recs is not null)
+                foreach (var r in _recs) r.Dispose();
+        }
+        finally
+        {
+            _operationGate.Release();
+        }
     }
 }

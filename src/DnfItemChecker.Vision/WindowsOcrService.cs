@@ -16,6 +16,7 @@ public sealed class WindowsOcrService : IOcrService
     private static readonly OcrResult Empty = new(Array.Empty<CoreLine>());
 
     private readonly OcrEngine? _engine;
+    private readonly SemaphoreSlim _recognitionGate = new(1, 1);
 
     public WindowsOcrService()
     {
@@ -27,14 +28,33 @@ public sealed class WindowsOcrService : IOcrService
 
     public async Task<OcrResult> RecognizeAsync(byte[] imageBytes, CancellationToken ct = default, double maxScale = 4.0)
     {
+        // Warm-up, immediate recognition and refinement share one WinRT engine.
+        await _recognitionGate.WaitAsync(ct).ConfigureAwait(false);
+        try
+        {
+            ct.ThrowIfCancellationRequested();
+            return await RecognizeCoreAsync(imageBytes, ct, maxScale).ConfigureAwait(false);
+        }
+        finally
+        {
+            _recognitionGate.Release();
+        }
+    }
+
+    private async Task<OcrResult> RecognizeCoreAsync(byte[] imageBytes, CancellationToken ct, double maxScale)
+    {
         if (_engine is null || imageBytes.Length == 0)
             return Empty;
 
         using var stream = new InMemoryRandomAccessStream();
-        await stream.WriteAsync(imageBytes.AsBuffer()).AsTask(ct).ConfigureAwait(false);
+        // Let each native operation finish before disposing its stream/bitmap. A cancelled
+        // caller discards the result, but must not release resources still used by WinRT.
+        await stream.WriteAsync(imageBytes.AsBuffer()).AsTask().ConfigureAwait(false);
+        ct.ThrowIfCancellationRequested();
         stream.Seek(0);
 
-        var decoder = await BitmapDecoder.CreateAsync(stream).AsTask(ct).ConfigureAwait(false);
+        var decoder = await BitmapDecoder.CreateAsync(stream).AsTask().ConfigureAwait(false);
+        ct.ThrowIfCancellationRequested();
 
         // Upscale small captures before OCR: Korean tooltip text reads markedly better at higher
         // resolution. Scale by WIDTH — a tooltip is portrait, so width constrains the text size while a
@@ -59,9 +79,11 @@ public sealed class WindowsOcrService : IOcrService
         using var bitmap = await decoder.GetSoftwareBitmapAsync(
             BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, transform,
             ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage)
-            .AsTask(ct).ConfigureAwait(false);
+            .AsTask().ConfigureAwait(false);
+        ct.ThrowIfCancellationRequested();
 
-        var result = await _engine.RecognizeAsync(bitmap).AsTask(ct).ConfigureAwait(false);
+        var result = await _engine.RecognizeAsync(bitmap).AsTask().ConfigureAwait(false);
+        ct.ThrowIfCancellationRequested();
 
         var lines = new List<CoreLine>(result.Lines.Count);
         foreach (var line in result.Lines)

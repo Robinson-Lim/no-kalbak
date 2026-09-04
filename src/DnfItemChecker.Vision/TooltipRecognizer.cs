@@ -233,26 +233,35 @@ public sealed class TooltipRecognizer : ITooltipRecognizer
         // Pass 2: re-OCR the cropped tooltip upscaled for cleaner stats/name. Adopt it only when it
         // still resolves a grade (the crop landed on the requested tooltip).
         string? labelSlot = null, labelRarity = null;
-        if (crop is not null)
-        {
-            var second = await RecognizeWindowsTimedAsync(crop, ct, timing).ConfigureAwait(false);
-            var refined = ParseTimed(second.Lines, timing);
-            if (refined.GradeBox is not null)
-            {
-                reading = TooltipStructuredReader.Apply(refined, second.Lines);
-                colorSource = crop;
-            }
-        }
+        var windowsTask = RefineWindowsAsync();
+        if (valueTask is not null)
+            await Task.WhenAll(valueTask, windowsTask).ConfigureAwait(false);
+        else
+            await windowsTask.ConfigureAwait(false);
 
-        // Pass 3: re-OCR just the right-aligned label column. Isolated and upscaled, OCR reads the tiny
-        // 2-char 부위/등급 labels that the full-tooltip passes drop entirely.
-        if (labels is not null)
+        async Task RefineWindowsAsync()
         {
-            var third = await RecognizeWindowsTimedAsync(
-                labels, ct, timing, 2.0, labelPass: true).ConfigureAwait(false);
-            var lines = third.Lines.Select(l => l.Text).ToList();
-            labelSlot = TooltipParser.ResolveSlotLabels(lines);
-            labelRarity = TooltipParser.ResolveRarity(lines);
+            if (crop is not null)
+            {
+                var second = await RecognizeWindowsTimedAsync(crop, ct, timing).ConfigureAwait(false);
+                var refined = ParseTimed(second.Lines, timing);
+                if (refined.GradeBox is not null)
+                {
+                    reading = TooltipStructuredReader.Apply(refined, second.Lines);
+                    colorSource = crop;
+                }
+            }
+
+            // Pass 3: re-OCR just the right-aligned label column. Isolated and upscaled, OCR reads the tiny
+            // 2-char 부위/등급 labels that the full-tooltip passes drop entirely.
+            if (labels is not null)
+            {
+                var third = await RecognizeWindowsTimedAsync(
+                    labels, ct, timing, 2.0, labelPass: true).ConfigureAwait(false);
+                var lines = third.Lines.Select(l => l.Text).ToList();
+                labelSlot = TooltipParser.ResolveSlotLabels(lines);
+                labelRarity = TooltipParser.ResolveRarity(lines);
+            }
         }
 
         // Await the parallel ONNX pass; it reads small stat digits/quality and can restore a dropped
@@ -547,7 +556,10 @@ public sealed class TooltipRecognizer : ITooltipRecognizer
         const int RecMaxTop = 452;
         var onnxSw = System.Diagnostics.Stopwatch.StartNew();
         var valueTask = lineOcr.RecognizeLinesAsync(crop, RecMaxTop, ct);   // det-free ONNX, overlaps the WinRT OCR
-        var second = await RecognizeWindowsTimedAsync(crop, ct, timing).ConfigureAwait(false);
+        var windowsTask = RecognizeWindowsTimedAsync(crop, ct, timing);
+        // Observe both native operations even if one fails or is cancelled.
+        await Task.WhenAll(valueTask, windowsTask).ConfigureAwait(false);
+        var second = await windowsTask.ConfigureAwait(false);
         var reading = ParseTimed(second.Lines, timing);
 
         TooltipReading? valuePass = null;

@@ -24,4 +24,11 @@
     <ProjectReference Include="..\..\src\DnfItemChecker.Vision\DnfItemChecker.Vision.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\src\DnfItemChecker.Vision\models\*">
+      <Link>models\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

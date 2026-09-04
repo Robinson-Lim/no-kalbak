@@ -383,7 +383,9 @@ public sealed class InGameTabViewModel : ViewModelBase
     // the per-attempt deadline guarantees that one native OCR call cannot kill the live loop forever.
     private async void OnTick(object? sender, EventArgs e)
     {
-        if (_loopState != LiveLoopState.Watching) return;
+        // A tab/focus toggle can restart the timer while the cancelled native call is
+        // still draining. Do not replace its CTS or start another foreground attempt.
+        if (_loopState != LiveLoopState.Watching || _liveRecognitionCts is not null) return;
 
         long now = System.Diagnostics.Stopwatch.GetTimestamp();
         if (_retryNotBeforeTick > now) return;
