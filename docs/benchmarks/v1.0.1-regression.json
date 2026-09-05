@@ -1,0 +1,155 @@
+{
+  "dataset": "labels_all.jsonl",
+  "samples": 143,
+  "captureStage": "dataset file-read proxy; excludes real screen capture",
+  "includeItemName": false,
+  "itemNameMode": "deferred secondary identity path; excluded from core scoring",
+  "latencyMs": {
+    "mean": 458.5372790209788,
+    "p50": 446.6116,
+    "p95": 547.98685,
+    "p99": 690.9421280000006,
+    "max": 840.6773
+  },
+  "stageLatencyMs": {
+    "capture": {
+      "samples": 143,
+      "mean": 0.22081608391608387,
+      "p50": 0.218,
+      "p95": 0.28506000000000004,
+      "p99": 0.34837200000000096
+    },
+    "total": {
+      "samples": 143,
+      "mean": 458.5372790209788,
+      "p50": 446.6116,
+      "p95": 547.98685,
+      "p99": 690.9421280000006
+    },
+    "tooltipLocator": {
+      "samples": 143,
+      "mean": 2.7015216783216807,
+      "p50": 2.4362,
+      "p95": 3.4459700000000004,
+      "p99": 11.07739400000001
+    },
+    "crop": {
+      "samples": 143,
+      "mean": 16.54568251748252,
+      "p50": 16.4963,
+      "p95": 18.3571,
+      "p99": 21.33567600000003
+    },
+    "rarity": {
+      "samples": 143,
+      "mean": 2.0871321678321673,
+      "p50": 1.8632,
+      "p95": 2.54401,
+      "p99": 7.245874000000041
+    },
+    "qualityPercent": {
+      "samples": 143,
+      "mean": 0.001039160839160839,
+      "p50": 0.00039999999999999996,
+      "p95": 0.0039900000000000005,
+      "p99": 0.007048000000000007
+    },
+    "slot": {
+      "samples": 143,
+      "mean": 0.0005342657342657341,
+      "p50": 0.0004,
+      "p95": 0.0011,
+      "p99": 0.0033720000000000425
+    },
+    "statsName": {
+      "samples": 143,
+      "mean": 0.03938741258741261,
+      "p50": 0.0054,
+      "p95": 0.02658,
+      "p99": 0.5758120000000108
+    },
+    "statsValue": {
+      "samples": 143,
+      "mean": 0.03938741258741261,
+      "p50": 0.0054,
+      "p95": 0.02658,
+      "p99": 0.5758120000000108
+    },
+    "windowsOcr": {
+      "samples": 143,
+      "mean": 287.52310699300693,
+      "p50": 280.1928,
+      "p95": 352.71049,
+      "p99": 373.79189
+    },
+    "onnxInference": {
+      "samples": 143,
+      "mean": 332.82905314685337,
+      "p50": 327.1821,
+      "p95": 400.52137999999997,
+      "p99": 534.5405220000007
+    },
+    "itemNameOcr": {
+      "samples": 143,
+      "mean": 0,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0
+    },
+    "postprocessing": {
+      "samples": 143,
+      "mean": 0.28961888111888096,
+      "p50": 0.2269,
+      "p95": 0.5846500000000006,
+      "p99": 1.1619100000000075
+    }
+  },
+  "fields": {
+    "rarity": {
+      "correct": 143,
+      "total": 143
+    },
+    "slot": {
+      "correct": 143,
+      "total": 143
+    },
+    "grade": {
+      "correct": 143,
+      "labeled": 143
+    },
+    "quality": {
+      "correct": 143,
+      "labeled": 143
+    },
+    "qualityPercent": {
+      "correct": 143,
+      "labeled": 143
+    },
+    "itemName": {
+      "correct": 0,
+      "labeled": 0
+    },
+    "mainStat": {
+      "correct": 143,
+      "labeled": 143
+    },
+    "statsName": {
+      "correct": 143,
+      "labeled": 143
+    },
+    "statsValue": {
+      "correct": 176,
+      "total": 176
+    },
+    "coreExact": {
+      "correct": 143,
+      "total": 143
+    },
+    "all": {
+      "correct": 143,
+      "total": 143
+    }
+  },
+  "statsValueFailures": [],
+  "measurementNote": "latencyMs measures the warm recognition call only. stageLatencyMs.capture records file reading separately. Original evaluation: 2026-09-04, v1.0.1, one regression run."
+}

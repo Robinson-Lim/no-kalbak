@@ -67,7 +67,7 @@ def render() -> str:
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-labelledby="title desc">',
         '<title id="title">no-kalbak OCR 성능 변화 그래프</title>',
-        '<desc id="desc">Python 1·2차 버전 전체 필드 통과율과 C# 버전 평균 인식 지연</desc>',
+        '<desc id="desc">Python OCR 반복 개선에 따른 전체 필드 통과율과 C# 버전 평균 인식 지연</desc>',
         '<defs>',
         '<style>',
         f'@font-face{{font-family:DNFForgedBlade;src:url(data:font/woff2;base64,{font_data}) format("woff2");font-weight:700;}}',
@@ -82,7 +82,7 @@ def render() -> str:
         f'<rect width="{WIDTH}" height="{HEIGHT}" filter="url(#grain)" opacity="0.035"/>',
         *corner_frame(),
         f'<rect x="92" y="76" width="15" height="15" transform="rotate(45 99.5 83.5)" fill="{GOLD}"/>',
-        svg_text(126, 93, "Python 1·2차  ·  전체 필드 통과율 (%)  ·  153장", 25),
+        svg_text(126, 93, "Python OCR  ·  전체 필드 통과율 (%)  ·  153장", 25),
         f'<rect x="872" y="76" width="15" height="15" transform="rotate(45 879.5 83.5)" fill="{RED}"/>',
         svg_text(906, 93, "C#  ·  평균 인식 지연 (ms)  ·  tests/pic 20장", 25),
         svg_line(800, 138, 800, 805, stroke=GOLD, opacity=0.20),
@@ -99,7 +99,7 @@ def render() -> str:
         x = left + (iteration / 66) * plot_w
         parts.extend([
             svg_line(x, top + plot_h, x, top + plot_h + 8, stroke=MUTED, opacity=0.75),
-            svg_text(x, top + plot_h + 34, "1차" if iteration == 0 else str(iteration), 16, fill=MUTED, anchor="middle"),
+            svg_text(x, top + plot_h + 34, str(iteration), 16, fill=MUTED, anchor="middle"),
         ])
 
     coords = []
