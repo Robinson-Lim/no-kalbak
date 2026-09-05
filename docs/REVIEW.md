@@ -41,11 +41,9 @@ Git 검사에서 지적한 기존 파일 3개의 불필요한 공백만 정리�
 
 재측정 요약: [profile_upload_review.json](benchmarks/profile_upload_review.json).
 
-## 남은 문제
+## 후속 조치
 
-`SQLitePCLRaw.lib.e_sqlite3` 2.1.11의 NU1903 경고가 기존 소스와 동일하게 재현됩니다.
-[공식 보안 권고](https://github.com/advisories/GHSA-2m69-gcr7-jv3q)는 해당 패키지 계열에 patched version을 제시하지 않으며 SQLite 3.50.2 이상을 권고합니다.
-경고를 숨기지 않았고 이번 기준 버전 정리에서 DB 의존성 교체를 섞지 않았습니다. 별도의 패키지 전환 및 SQLite 회귀 검증이 필요합니다.
+1.0.0 검증 당시 `SQLitePCLRaw.lib.e_sqlite3` 2.1.11의 NU1903 경고가 재현됐습니다. 1.0.2에서 네이티브 SQLite 패키지를 2.1.13으로 갱신하고 전체 테스트와 NuGet 취약 패키지 감사를 통과했습니다. [현재 검증 결과](VALIDATION.md)
 
 기존 143장 벤치마크 결과는 모든 게임 환경의 정확도를 보장하지 않습니다.
 실제 게임에서의 커서 정지부터 UI 표시까지의 지연, 다양한 DPI·해상도 검증 및 P95 300ms 최적화는 별도 작업입니다.

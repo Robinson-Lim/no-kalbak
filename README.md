@@ -36,7 +36,7 @@ OCR은 PC에서 실행하며 게임 화면을 외부 OCR 서버로 전송하지 
 
 **Windows 10 2004(빌드 19041) 이상 · x64 · 한국어 Windows OCR 구성요소**가 필요합니다.
 
-1. [배포판 다운로드](https://github.com/Robinson-Lim/no-kalbak/releases/tag/v1.0.1)에서 `no-kalbak-runtime.zip`을 받아 쓰기 가능한 폴더에 **전체 압축 해제**합니다.
+1. [배포판 다운로드](https://github.com/Robinson-Lim/no-kalbak/releases/tag/v1.0.2)에서 `no-kalbak-runtime.zip`을 받아 쓰기 가능한 폴더에 **전체 압축 해제**합니다.
 2. `config.json.sample`을 `config.json`으로 복사하고 본인의 Neople Open API 키를 입력합니다.
 3. `DnfItemChecker.App.exe`를 실행하고 캐릭터를 선택합니다.
 4. 인게임 인식을 시작한 뒤 게임 창에서 장비에 마우스를 올립니다.
@@ -97,7 +97,7 @@ $env:NEOPLE_API_KEY = "본인의 API 키"
 
 빌드 결과는 `artifacts/publish/`, 배포 ZIP과 SHA-256은 `artifacts/`에 생성됩니다. 배포 스크립트는 실행 파일·모델·기준표·빈 설정 예제·설명서만 패키징합니다.
 
-[배포 검증과 알려진 문제](docs/VALIDATION.md): SQLite 의존성의 보안 경고와 이미지 인코더 테스트의 간헐적 실패가 남아 있습니다.
+[배포 검증 결과](docs/VALIDATION.md): 자동 테스트 138개, NuGet 취약 패키지 감사, Windows x64 패키징을 확인했습니다.
 
 | 경로 | 역할 |
 |---|---|
@@ -116,11 +116,17 @@ $env:NEOPLE_API_KEY = "본인의 API 키"
 
 ## 패치 노트
 
+### 1.0.2 — 2026-09-05
+
+- 취약점 경고가 발생하던 네이티브 SQLite 패키지를 2.1.13으로 갱신했습니다.
+- GDI+ 이미지 코덱을 사용하는 Vision 테스트 클래스를 순차 실행해 간헐적인 인코더 초기화 실패를 방지했습니다. OCR 동시 호출은 전용 회귀 테스트에서 계속 검증합니다.
+- 자동 테스트 138개와 NuGet 취약 패키지 감사를 통과했습니다. [배포 검증 결과](docs/VALIDATION.md)
+
 ### 1.0.1 — 2026-09-04
 
 - 반복 인식 중 취소 요청과 다음 인식이 겹칠 때 Windows OCR 객체가 동시에 사용되던 문제를 수정했습니다.
 - ONNX 추론 중 자원 해제와 재호출이 충돌하지 않도록 종료 순서를 보강했습니다.
-- 자동 테스트 138개와 143장 데이터셋 회귀 평가을 통과했습니다. [원인과 검증 결과](docs/OCR-CRASH-FIX.md)
+- 자동 테스트 138개와 143장 데이터셋 회귀 평가를 통과했습니다. [원인과 검증 결과](docs/OCR-CRASH-FIX.md)
 
 <details>
 <summary><strong>이전 버전 · 2026년 4월–9월</strong></summary>
